@@ -10,24 +10,16 @@
 
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || p == root || q == root) {
-            return root;
-        }
-        TreeNode search = dfs(root, p, q);
-        return search;
-        
-    }
-    public TreeNode dfs(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || p == root || q == root) {
-            return root;
-        }
-        TreeNode left = dfs(root.left, p, q);
-        TreeNode right = dfs(root.right, p, q);
-        if (left == null) {
-            return right;
-        }
-        if (right == null) {
-            return left;
+        while (root != null) {
+            if (p.val < root.val && q.val < root.val) {
+                root = root.left;
+            }
+            else if (p.val > root.val && q.val > root.val) {
+                root = root.right;
+            }
+            else {
+                return root;
+            }
         }
         return root;
     }
