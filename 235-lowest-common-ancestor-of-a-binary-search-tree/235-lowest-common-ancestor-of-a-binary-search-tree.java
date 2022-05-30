@@ -13,16 +13,22 @@ class Solution {
         if (root == null || p == root || q == root) {
             return root;
         }
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        TreeNode search = dfs(root, p, q);
+        return search;
+        
+    }
+    public TreeNode dfs(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || p == root || q == root) {
+            return root;
+        }
+        TreeNode left = dfs(root.left, p, q);
+        TreeNode right = dfs(root.right, p, q);
         if (left == null) {
             return right;
         }
-        else if (right == null) {
+        if (right == null) {
             return left;
         }
         return root;
-        
-        
     }
 }
