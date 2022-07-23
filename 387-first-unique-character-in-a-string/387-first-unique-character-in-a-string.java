@@ -1,6 +1,5 @@
 class Solution {
     public int firstUniqChar(String s) {
-        Queue<Integer> q = new LinkedList();
         HashMap<Character, Integer> mp = new HashMap();
         for (int i = 0; i < s.length(); i++) {
             if (mp.containsKey(s.charAt(i))) {
