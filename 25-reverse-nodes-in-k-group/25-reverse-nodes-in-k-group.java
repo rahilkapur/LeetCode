@@ -10,29 +10,28 @@
  */
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
-        ListNode dummy = new ListNode(0 , head);
-        ListNode groupBefore = dummy;
+        ListNode dummy = new ListNode(0, head);
+        ListNode groupPrev = dummy;
         while (true) {
-            ListNode kthNode = getKthNode(groupBefore, k);
-            if (kthNode == null) { //gone thru whole ll
-                break;
+            ListNode kthNode = getKthNode(groupPrev, k);
+            if (kthNode == null) { //reached end of list
+                break;                
             }
             ListNode groupAfter = kthNode.next;
-            ListNode prev = groupAfter;
-            ListNode curr = groupBefore.next;
+            ListNode curr = groupPrev.next;
+            ListNode temp = groupAfter;
             while (curr != groupAfter) {
-                ListNode temp = curr.next;
-                curr.next = prev;
-                prev = curr;
-                curr = temp;
+                ListNode tmp = curr.next;
+                curr.next = temp;
+                temp = curr;
+                curr = tmp;
             }
-            ListNode tmp = groupBefore.next;
-            groupBefore.next = kthNode;
-            groupBefore = tmp;
+            //make sure previos ones point to correct ones
+            ListNode node = groupPrev.next;
+            groupPrev.next = kthNode;
+            groupPrev = node;
         }
         return dummy.next;
-        
-        
     }
     public ListNode getKthNode(ListNode curr, int k) {
         while (curr != null && k > 0) {
@@ -40,5 +39,5 @@ class Solution {
             k -=1;
         }
         return curr;
-}
+    }
 }
