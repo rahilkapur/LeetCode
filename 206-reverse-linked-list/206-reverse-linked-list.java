@@ -16,15 +16,10 @@ class Solution {
         if (head.next == null) {
             return head;
         }
-        ListNode prev = head;
-        ListNode curr = head.next;
-        ListNode temp = curr.next;
-        curr.next = prev;
-        prev.next = null;
-        prev = curr;
-        curr = temp;
+        ListNode prev = null;
+        ListNode curr = head;
         while (curr != null) {
-            temp = curr.next;
+            ListNode temp = curr.next;
             curr.next = prev;
             prev = curr;
             curr = temp;
