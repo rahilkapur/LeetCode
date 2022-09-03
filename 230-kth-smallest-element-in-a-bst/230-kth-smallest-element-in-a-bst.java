@@ -14,18 +14,20 @@
  * }
  */
 class Solution {
-    public ArrayList<Integer> inOrder(TreeNode curr, ArrayList<Integer> list) {
-        if (curr == null) { //traversed thru whole bst
-            return list;
+    public void get(ArrayList<Integer> list, TreeNode node) {
+        if (node == null) {
+            return;
         }
-        inOrder(curr.left, list);
-        list.add(curr.val);
-        inOrder(curr.right, list);
-        return list;
+        //add nodes in order traversal to add in list correctly to get order of values correctly
+        get(list, node.left);
+        list.add(node.val);
+        get(list, node.right);
+        
     }
     public int kthSmallest(TreeNode root, int k) {
-        ArrayList<Integer> li = inOrder(root, new ArrayList<Integer>());
-        return li.get(k - 1); //k - 1 will be kth element in list
+        ArrayList<Integer> list = new ArrayList();
+        get(list, root);
+        return list.get(k - 1);
         
     }
 }
