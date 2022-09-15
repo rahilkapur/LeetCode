@@ -14,30 +14,32 @@ class Solution {
         ListNode groupPrev = dummy;
         while (true) {
             ListNode kthNode = getKthNode(groupPrev, k);
-            if (kthNode == null) { //reached end of list
-                break;                
+            if (kthNode == null) {
+                //gone through the whole ist
+                break;
             }
             ListNode groupAfter = kthNode.next;
+            ListNode bef = groupAfter;
             ListNode curr = groupPrev.next;
-            ListNode temp = groupAfter;
             while (curr != groupAfter) {
-                ListNode tmp = curr.next;
-                curr.next = temp;
-                temp = curr;
-                curr = tmp;
+                ListNode temp = curr.next;
+                curr.next = bef;
+                bef = curr;
+                curr = temp;
             }
-            //make sure previos ones point to correct ones
-            ListNode node = groupPrev.next;
+            ListNode t = groupPrev.next;
             groupPrev.next = kthNode;
-            groupPrev = node;
+            groupPrev = t;
+            
         }
         return dummy.next;
+        
     }
-    public ListNode getKthNode(ListNode curr, int k) {
-        while (curr != null && k > 0) {
-            curr = curr.next;
-            k -=1;
+    public ListNode getKthNode(ListNode t, int k) {
+        while (t != null && k > 0) {
+            t = t.next;
+            k--;
         }
-        return curr;
+        return t;
     }
 }
