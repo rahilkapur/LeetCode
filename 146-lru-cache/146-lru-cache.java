@@ -1,75 +1,76 @@
 class LRUCache {
-    public class DNode {
+    class Node {
         int key;
         int value;
-        DNode prev;
-        DNode next;
+        Node prev;
+        Node next;
     }
-        public void addNode(DNode node) {
-            node.prev = head;
-            node.next = head.next;
-            head.next.prev = node;
-            head.next = node;
-        }
-        public void removeNode(DNode node) {
-            node.prev.next = node.next;
-            node.next.prev = node.prev;
-        }
-        public void moveToHead(DNode node) { //recently been accessed
-            removeNode(node);
-            addNode(node);
-}
-        public DNode popTail() {
-            DNode temp = tail.prev;
-            removeNode(temp);
-            return temp;
-        }
-    private HashMap<Integer, DNode> map = new HashMap();
-    private DNode head;
-    private DNode tail;
-    private int capacity;
-    private int size;
-
+    //add
+    //remove
+    //moveToFront
+    public void add(Node nd) {
+        nd.prev = head;
+        nd.next = head.next;
+        head.next.prev = nd;
+        head.next = nd;
+    }
+    public void remove(Node nd) {
+        nd.prev.next = nd.next;
+        nd.next.prev = nd.prev;
+    }
+    public Node popTail() {
+        Node tmp = tail.prev;
+        remove(tmp);
+        return tmp;
+    }
+    public void moveToFront(Node nd) {
+        remove(nd);
+        add(nd);
+    }
+    private HashMap<Integer, Node> map;
+    int currSize = 0;
+    int maxSize = 0;
+    Node head = null;
+    Node tail = null;
     public LRUCache(int capacity) {
-        this.capacity = capacity;
-        this.size = 0;
-        head = new DNode();
-        tail = new DNode();
+        maxSize = capacity;
+        currSize = 0;
+        head = new Node();
+        tail = new Node();
         head.next = tail;
         tail.prev = head;
-        
+        map = new HashMap();
     }
     
     public int get(int key) {
-        if (map.containsKey(key)) {
-            DNode temp = map.get(key);
-            moveToHead(temp);
-            return temp.value;
+        Node t = map.get(key);
+        if (t == null) {
+            return -1;
         }
-        return -1;
-        
+        moveToFront(t);
+        return t.value;
     }
     
     public void put(int key, int value) {
-        DNode node = map.get(key);
-        if (node == null) {
-            DNode temp = new DNode();
-            temp.key = key;
-            temp.value = value;
-            addNode(temp);
-            ++this.size;
-            map.put(key, temp);
-            if (this.size > this.capacity) {
-                DNode rem = popTail();
-                map.remove(rem.key);
-                --this.size;
+        Node t = map.get(key);
+        if (t == null) {
+            Node toadd = new Node();
+            toadd.key = key;
+            toadd.value = value;
+            add(toadd);
+            map.put(key, toadd);
+            ++this.currSize;
+            if (this.currSize > this.maxSize) {
+                Node nd = popTail();
+                map.remove(nd.key);
+                --this.currSize;
             }
         }
         else {
-            node.value = value;
-            moveToHead(node);
+            t.value = value;
+            map.replace(key, t);
+            moveToFront(t);
         }
-        
     }
 }
 
